@@ -1,0 +1,3 @@
+const REQUIRED_VALIDATION_MESSAGE = '{PATH} is required';
+
+export { REQUIRED_VALIDATION_MESSAGE };
