@@ -1,7 +1,9 @@
 {
   "APP_TITLE": "Content Management APP",
   "ADD_NEW_PAGE": "Add new page",
+  "EDIT_PAGE": "Edit page",
   "ADD": "Add",
+  "EDIT": "Edit",
   "TEXT_RESOURCE": "Text Resource",
   "SINGLE_LINE": "Single Line",
   "MULTI_LINE": "Multi Line",

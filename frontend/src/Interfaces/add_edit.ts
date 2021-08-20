@@ -4,4 +4,5 @@ export interface IAddEditInputsProps {
   description: string;
   image: any;
   textResources: any;
+  id: string;
 }

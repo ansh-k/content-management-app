@@ -8,15 +8,15 @@ const TextResourceModal = ({
   textResourceToggle,
   onTextResourceInputChange,
   onSelectChange,
-  t, onAddNewTextResourceModalToggle, onTextResourceSubmit
+  t, onAddNewTextResourceModalToggle, onTextResourceSubmit, id
 }: any) => {
-  const { name, value, type, maxLength, lineType } = textResourceInputs;
-
+  const { name, value, type, maxLength, lineType, _id = '' } = textResourceInputs;
+  console.log('textResourceInputs', textResourceInputs)
   return (
     <MDBModal isOpen={textResourceToggle} centered>
       <MDBModalHeader toggle={onAddNewTextResourceModalToggle}>
         {' '}
-        {t('ADD')} {t('TEXT_RESOURCE')}
+        {id && _id ? t('EDIT') : t('ADD')} {t('TEXT_RESOURCE')}
       </MDBModalHeader>
       <MDBModalBody>
         <form onSubmit={onTextResourceSubmit}>
@@ -45,7 +45,7 @@ const TextResourceModal = ({
               <Input
                 type='text'
                 name='type'
-                label='Name'
+                label='Type'
                 placeholder='Enter type'
                 value={type}
                 onChange={onTextResourceInputChange}
@@ -80,8 +80,8 @@ const TextResourceModal = ({
             <div className='col-md-12'>
               <input
                 type='submit'
-                className='btn btn-primary'
-                value={`${t('ADD')}`}
+                className='btn btn-primary btn-center'
+                value={id && _id ? `${t('EDIT')}` : `${t('ADD')}`}
               />
             </div>
           </div>

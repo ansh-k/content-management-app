@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IAddEditInputsProps, IListProps } from '../../Interfaces';
 import { AddEditPageForm } from './add-editForm';
 import { convertBase64 } from '../../util';
-import { addNewPage } from '../../redux/actions';
+import { addNewPage, requestPageById, editPage, deleteRecord } from '../../redux/actions';
 
 import TextResourceModal from './../../common/textResourceModel';
 import { useEffect } from 'react';
@@ -16,6 +16,7 @@ const initialStates = {
     description: '',
     image: undefined,
     textResources: [],
+    id: '',
 };
 
 const textResourceInitialStates = {
@@ -30,7 +31,11 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const { history } = props;
+    const {
+        history,
+        match: { params },
+    } = props;
+    const { id = '' } = params || {};
 
     // states
     const [inputs, setInputs] = useState<IAddEditInputsProps>(initialStates);
@@ -40,17 +45,33 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     const [textResourceToggle, setTextResourceToggle] = useState<any>(false);
 
     // selectors
-    const pagesResult: any = useSelector<any>(state => state.pageReducer);
-    const { isPageAdded } = pagesResult
+    const pagesResult: any = useSelector<any>((state) => state.pageReducer);
+    const { isPageAdded, pageData } = pagesResult;
+    useEffect(() => {
+        if (isPageAdded) history.push('/');
+    }, [isPageAdded]);
 
     useEffect(() => {
-        if (isPageAdded) history.push('/')
-    }, [isPageAdded])
+        if (id) dispatch(requestPageById(id));
+    }, []);
+
+    useEffect(() => {
+        if (pageData && pageData._id) {
+            setInputs({
+                name: pageData.name,
+                url: pageData.url,
+                description: pageData.description,
+                image: pageData.image,
+                textResources: pageData.textResources,
+                id: pageData._id,
+            });
+        }
+    }, [pageData]);
     /*
-      -----------------------------
-          Function to upload file
-      -----------------------------
-      */
+          -----------------------------
+              Function to upload file
+          -----------------------------
+          */
     const onHandleFileUpload = async (event: Event) => {
         const input = event.target as HTMLInputElement;
 
@@ -63,10 +84,10 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     };
 
     /*
-       -----------------------------------------------
-           Function to manage inputs states on change
-       -----------------------------------------------
-       */
+           -----------------------------------------------
+               Function to manage inputs states on change
+           -----------------------------------------------
+           */
     const onInputChange = (event: FormEvent<HTMLInputElement>) => {
         const { name, value } = event.target as HTMLFormElement;
         setInputs({
@@ -75,10 +96,10 @@ const AddEditPage: FC<IListProps> = (props: any) => {
         });
     };
     /*
-   --------------------------------------------------------------
-       Function to manage text resource inputs states on change
-   --------------------------------------------------------------
-   */
+       --------------------------------------------------------------
+           Function to manage text resource inputs states on change
+       --------------------------------------------------------------
+       */
     const onTextResourceInputChange = (event: FormEvent<HTMLInputElement>) => {
         const { name, value } = event.target as HTMLFormElement;
         setTextResourceInputs({
@@ -88,10 +109,10 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     };
 
     /*
-   --------------------------------------------------------------
-       Function to manage select inputs states on change
-   --------------------------------------------------------------
-   */
+       --------------------------------------------------------------
+           Function to manage select inputs states on change
+       --------------------------------------------------------------
+       */
     const onSelectChange = (event: FormEvent<HTMLInputElement>) => {
         const { value } = event.target as HTMLFormElement;
         setTextResourceInputs({
@@ -101,51 +122,90 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     };
 
     /*
-     -------------------------------------
-         Function to manage form submit
-      ------------------------------------
-     */
+         -------------------------------------
+             Function to manage form submit
+          ------------------------------------
+         */
     const onSubmit = async (event: SyntheticEvent) => {
         event.preventDefault();
-        const { textResources } = inputs
+        const { textResources } = inputs;
         const data = textResources;
-        dispatch(
-            addNewPage({
-                ...inputs,
-                textResources: JSON.stringify(data),
-            })
-        );
+        if (id && inputs.id) {
+            dispatch(
+                editPage({
+                    ...inputs,
+                    textResources: JSON.stringify(data),
+                })
+            );
+        } else {
+            dispatch(
+                addNewPage({
+                    ...inputs,
+                    textResources: JSON.stringify(data),
+                })
+            );
+        }
     };
 
     /*
-        -------------------------------------
-          Function to manage add/edit Modal
-         ------------------------------------
-        */
+            -------------------------------------
+              Function to manage add/edit Modal
+             ------------------------------------
+            */
     const onAddNewTextResourceModalToggle = () => {
         setTextResourceInputs(textResourceInitialStates);
         setTextResourceToggle(!textResourceToggle);
     };
 
     /*
-    ------------------------------------------------
-      Function to manage text resource form submit
-     -----------------------------------------------
-    */
+        ------------------------------------------------
+          Function to manage text resource form submit
+         -----------------------------------------------
+        */
     const onTextResourceSubmit = (event: SyntheticEvent) => {
         event.preventDefault();
-        inputs.textResources.push(textResourceInputs);
+        if (textResourceInputs._id && id) {
+            var foundIndex = inputs.textResources.findIndex((x: any) => x._id == textResourceInputs._id);
+            inputs.textResources[foundIndex] = textResourceInputs;
+        } else {
+            inputs.textResources.push(textResourceInputs);
+        }
         setInputs({
             ...inputs,
             textResources: [...inputs.textResources],
         });
         onAddNewTextResourceModalToggle();
     };
-
-
+    /*
+          ------------------------------------------------
+            Function to manage edit text resource modal
+           -----------------------------------------------
+          */
+    const OnTextResourceEdit = (item: any) => {
+        if (!textResourceToggle) {
+            setTextResourceInputs(item);
+            setTextResourceToggle(true);
+        } else {
+            setTextResourceInputs(textResourceInitialStates);
+            setTextResourceToggle(false);
+        }
+    };
+    /*
+          -------------------------------------
+            Function to delete text resource
+           -------------------------------------
+          */
+    const onTextResourceDelete = (_id: number) => {
+        dispatch(
+            deleteRecord({
+                pageID: id,
+                textResourceID: _id
+            })
+        );
+    }
     return (
         <div className='container card p-3 mt-2'>
-            <h6>{t('ADD_NEW_PAGE')}</h6>
+            <h6>{id ? t('EDIT_PAGE') : t('ADD_NEW_PAGE')}</h6>
             <AddEditPageForm
                 onHandleFileUpload={onHandleFileUpload}
                 inputs={inputs}
@@ -153,6 +213,9 @@ const AddEditPage: FC<IListProps> = (props: any) => {
                 onSubmit={onSubmit}
                 onInputChange={onInputChange}
                 onAddNewTextResourceModalToggle={onAddNewTextResourceModalToggle}
+                id={id}
+                OnTextResourceEdit={OnTextResourceEdit}
+                onTextResourceDelete={onTextResourceDelete}
             />
             <TextResourceModal
                 textResourceInputs={textResourceInputs}
@@ -162,6 +225,7 @@ const AddEditPage: FC<IListProps> = (props: any) => {
                 onSelectChange={onSelectChange}
                 onAddNewTextResourceModalToggle={onAddNewTextResourceModalToggle}
                 t={t}
+                id={id}
             />
         </div>
     );

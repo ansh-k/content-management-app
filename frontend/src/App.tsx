@@ -27,6 +27,11 @@ function App(props: any) {
             path='/add-new'
             component={AddEditPage}
           />
+          <Route
+            exact
+            path='/edit/:id'
+            component={AddEditPage}
+          />
         </Switch>
       </main>
     </div>

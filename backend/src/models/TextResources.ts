@@ -5,6 +5,7 @@ export interface ITxtRes extends Document {
   pageID: string;
   name: string;
   value: string;
+  type: string;
   maxLength: string;
   lineType: string;
 }
@@ -19,6 +20,10 @@ const txtResSchema = new Schema(
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     value: {
+      type: Schema.Types.String,
+      required: REQUIRED_VALIDATION_MESSAGE,
+    },
+    type: {
       type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },

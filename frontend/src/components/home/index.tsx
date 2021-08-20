@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SearchForm } from './SearchForm';
 import { TableForm } from './TableForm'
 import { IListProps } from '../../Interfaces';
-import { ADD_NEW_PAGE } from '../../util';
-import { requestPages } from '../../redux/actions';
+import { ADD_NEW_PAGE, EDIT_PAGE } from '../../util';
+import { deleteRecord, requestPages } from '../../redux/actions';
 
 
 const Home: FC<IListProps> = (props: any) => {
@@ -39,6 +39,28 @@ const Home: FC<IListProps> = (props: any) => {
     history.push(ADD_NEW_PAGE)
   }
 
+  /*
+  ------------------------------------
+  Function to link to edit new page
+  ------------------------------------
+  */
+  const OnPageEdit = (id: string) => {
+    history.push(EDIT_PAGE.replace(':id', id))
+  }
+
+  /*
+      -------------------------------------
+        Function to delete page record
+       -------------------------------------
+      */
+  const onPageRecordDelete = (id: number) => {
+    dispatch(
+      deleteRecord({
+        pageID: id,
+      })
+    );
+  }
+
   return <div className='container'>
     <div className='row space-top'>
       <div className='col-md-6'>
@@ -50,7 +72,7 @@ const Home: FC<IListProps> = (props: any) => {
         </button>
       </div>
       <div className='col-md-12'>
-        <TableForm pagesRecord={pagesRecord} />
+        <TableForm pagesRecord={pagesRecord} OnPageEdit={OnPageEdit} onPageRecordDelete={onPageRecordDelete} />
       </div>
     </div>
   </div>;

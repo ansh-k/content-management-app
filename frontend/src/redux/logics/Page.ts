@@ -1,9 +1,21 @@
 import { createLogic } from 'redux-logic';
-import { addNewPageSuccess, PageActions, PagesListSuccess } from '../actions';
+import {
+  addNewPageSuccess,
+  editPageSuccess,
+  PageActions,
+  pageByIdSuccess,
+  PagesListSuccess,
+  requestPageById,
+  requestPages,
+} from '../actions';
 import axios from 'axios';
 import toastr from 'toastr';
-import { push } from 'react-router-redux';
 
+/*
+-----------------
+  Add new page
+-----------------
+*/
 const addNewPage = createLogic({
   type: PageActions.ADD_PAGE_REQUEST,
   async process(data: any, dispatch, done) {
@@ -22,6 +34,11 @@ const addNewPage = createLogic({
   },
 });
 
+/*
+-----------------
+  Fetch pages list
+-----------------
+*/
 const pagesList = createLogic({
   type: PageActions.REQUEST_PAGES_LIST,
   async process(data: any, dispatch, done) {
@@ -42,4 +59,91 @@ const pagesList = createLogic({
   },
 });
 
-export const PageLogics = [addNewPage, pagesList];
+/*
+--------------------------
+  Fetch page data by id
+-------------------------
+*/
+const pageDataById = createLogic({
+  type: PageActions.REQUEST_PAGE_BY_ID,
+  async process(data: any, dispatch, done) {
+    const { action } = data;
+    const { payload } = action;
+    await axios
+      .get(`${process.env.REACT_APP_SERVER_URL}page/${payload}`)
+      .then((response) => {
+        const { data, success } = response.data;
+        if (success) {
+          dispatch(pageByIdSuccess(data));
+        }
+        done();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  },
+});
+
+/*
+-----------------
+  Edit page
+-----------------
+*/
+const editPage = createLogic({
+  type: PageActions.EDIT_PAGE_REQUEST,
+  async process(data: any, dispatch, done) {
+    const { action } = data;
+    const { payload } = action;
+    const { id } = payload;
+    await axios
+      .put(`${process.env.REACT_APP_SERVER_URL}page/${id}`, payload)
+      .then(() => {
+        toastr.success('Page edited successfully');
+        dispatch(editPageSuccess());
+        done();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  },
+});
+
+/*
+----------------------------------
+  Delete Record textResource/Page
+---------------------------------
+*/
+const deleteRecord = createLogic({
+  type: PageActions.DELETE_RECORD_REQUEST,
+  async process(data: any, dispatch, done) {
+    const { action } = data;
+    const { payload } = action;
+    const { pageID, textResourceID = '' } = payload;
+    await axios
+      .delete(
+        `${process.env.REACT_APP_SERVER_URL}page/${
+          textResourceID ? `/textResource/${textResourceID}` : pageID
+        }`
+      )
+      .then(() => {
+        toastr.success('Record deleted successfully');
+        if (textResourceID) {
+          dispatch(requestPageById(pageID));
+        } else {
+          dispatch(requestPages());
+        }
+        done();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  },
+});
+
+export const PageLogics = [
+  addNewPage,
+  pagesList,
+  pageDataById,
+  editPage,
+  deleteRecord,
+];

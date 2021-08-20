@@ -1,4 +1,7 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import Input from '../../common/Input';
 
 export const AddEditPageForm = ({
@@ -8,6 +11,9 @@ export const AddEditPageForm = ({
     onInputChange,
     t,
     onAddNewTextResourceModalToggle,
+    id,
+    OnTextResourceEdit,
+    onTextResourceDelete,
 }: any): JSX.Element => {
     const { name, url, description, image, textResources } = inputs || {};
 
@@ -55,11 +61,16 @@ export const AddEditPageForm = ({
                         onChange={onHandleFileUpload}
                     />
                 </div>
+                {image ? (
+                    <div className='col-md-6'>
+                        <img src={image} alt='' width='90' />
+                    </div>
+                ) : null}
                 <div className='col-md-12'>
                     <p className='space-top border-bottom d-flex justify-content-between'>
                         {t('TEXT_RESOURCE')} :
                         <button
-                            type="button"
+                            type='button'
                             className='btn btn-secondary'
                             onClick={onAddNewTextResourceModalToggle}
                         >
@@ -68,15 +79,40 @@ export const AddEditPageForm = ({
                     </p>
                 </div>
                 {textResources && textResources.length > 0 ? (
-                    <div className="col-12 col-md-6">
-                        <div className="row border p-2 my-2" >
-                            <div className="col-6">Name</div>
-                            <div className="col-6">Value</div>
+                    <div className='col-12 col-md-6'>
+                        <div className='row border p-2 my-2'>
+                            <div className='col-3'>Name</div>
+                            <div className='col-3'>Value</div>
+                            {id ? <div className='col-6'>Action</div> : null}
                         </div>
                         {textResources.map((item: any, i: number) => (
-                            <div className="row border p-2 my-2" key={i}>
-                                <div className="col-6">{item.name}</div>
-                                <div className="col-6">{item.value}</div>
+                            <div className='row border p-2 my-2' key={i}>
+                                <div className='col-3'>{item.name}</div>
+                                <div className='col-3'>{item.value}</div>
+                                <div className='col-6'>
+                                    {id && item._id ? (
+                                        <>
+                                            <span
+                                                className='cursor-pointer mr-2'
+                                                onClick={() => OnTextResourceEdit(item)}
+                                            >
+                                                <FontAwesomeIcon icon={faPencilAlt} />
+                                            </span>
+                                            <span
+                                                className='cursor-pointer'
+                                                onClick={() =>
+                                                    window.confirm(
+                                                        'Are you sure you wish to delete this item?'
+                                                    ) && onTextResourceDelete(item._id)
+                                                }
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </span>
+                                        </>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -84,8 +120,8 @@ export const AddEditPageForm = ({
                 <div className='col-md-12'>
                     <input
                         type='submit'
-                        className='btn btn-primary'
-                        value={`${t('ADD')}`}
+                        className='btn-center btn btn-primary '
+                        value={id ? `${t('EDIT')}` : `${t('ADD')}`}
                     />
                 </div>
             </div>

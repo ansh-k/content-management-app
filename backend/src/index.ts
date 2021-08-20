@@ -17,7 +17,7 @@ const app = express();
 */
 const corsOption = {
   origin: true,
-  methods: 'GET,POST,PATCH,DELETE',
+  methods: 'GET,POST,PATCH,DELETE, PUT',
   credentials: true,
 };
 
