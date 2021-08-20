@@ -5,8 +5,22 @@
   "ADD": "Add",
   "EDIT": "Edit",
   "TEXT_RESOURCE": "Text Resource",
+  "TEXT_RESOURCES": "Text Resources",
   "SINGLE_LINE": "Single Line",
   "MULTI_LINE": "Multi Line",
   "LINE_TYPE": "Line Type",
-  "SELECT": "Select"
+  "SELECT": "Select",
+  "VIEW_PAGE": "View Page",
+  "NAME": "Name",
+  "DESCRIPTION": "Description",
+  "ACTION": "Action",
+  "URL": "Url",
+  "SNAPSHOT": "Snapshot",
+  "TEXT_RESOURCE_COUNT": "Text resources count",
+  "VALUE": "Value",
+  "TYPE": "Type",
+  "MAX_LENGTH": "Max Length",
+  "CREATED_DATE": "Created Date",
+  "UPDATED_DATE": "Last Updated Date",
+  "NOT_ADDED": "Not Added"
 }

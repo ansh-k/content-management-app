@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
+import { useTranslation } from "react-i18next";
+
 
 import HomePage from './components/home';
-import AddEditPage from './components/add_edit';
-
-
-import { useTranslation } from "react-i18next";
+import AddEditPage from './components/addEdit';
+import ViewPage from './components/view';
 
 function App(props: any) {
   const { t, } = useTranslation();
@@ -31,6 +31,11 @@ function App(props: any) {
             exact
             path='/edit/:id'
             component={AddEditPage}
+          />
+          <Route
+            exact
+            path='/view/:id'
+            component={ViewPage}
           />
         </Switch>
       </main>

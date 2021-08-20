@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SearchForm } from './SearchForm';
 import { TableForm } from './TableForm'
 import { IListProps } from '../../Interfaces';
-import { ADD_NEW_PAGE, EDIT_PAGE } from '../../util';
+import { ADD_NEW_PAGE, EDIT_PAGE, VIEW_PAGE } from '../../util';
 import { deleteRecord, requestPages } from '../../redux/actions';
+import { useTranslation } from 'react-i18next';
 
 
 const Home: FC<IListProps> = (props: any) => {
   const { history } = props;
+  const { t } = useTranslation();
+
 
   const dispatch = useDispatch()
 
@@ -49,6 +52,15 @@ const Home: FC<IListProps> = (props: any) => {
   }
 
   /*
+------------------------------------
+Function to link to view record page
+------------------------------------
+*/
+  const OnPageView = (id: string) => {
+    history.push(VIEW_PAGE.replace(':id', id))
+  }
+
+  /*
       -------------------------------------
         Function to delete page record
        -------------------------------------
@@ -68,11 +80,11 @@ const Home: FC<IListProps> = (props: any) => {
       </div>
       <div className='col-md-6'>
         <button className='btn btn-secondary' onClick={() => onAddNewPage()}>
-          Add New Page
+          {t('ADD_NEW_PAGE')}
         </button>
       </div>
       <div className='col-md-12'>
-        <TableForm pagesRecord={pagesRecord} OnPageEdit={OnPageEdit} onPageRecordDelete={onPageRecordDelete} />
+        <TableForm pagesRecord={pagesRecord} OnPageEdit={OnPageEdit} onPageRecordDelete={onPageRecordDelete} OnPageView={OnPageView} t={t} />
       </div>
     </div>
   </div>;

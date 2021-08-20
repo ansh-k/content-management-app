@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IAddEditInputsProps, IListProps } from '../../Interfaces';
-import { AddEditPageForm } from './add-editForm';
+import { AddEditPageForm } from './AddEditForm';
 import { convertBase64 } from '../../util';
 import { addNewPage, requestPageById, editPage, deleteRecord } from '../../redux/actions';
 
-import TextResourceModal from './../../common/textResourceModel';
+import TextResourceModal from '../../common/textResourceModel';
 import { useEffect } from 'react';
 
 const initialStates = {

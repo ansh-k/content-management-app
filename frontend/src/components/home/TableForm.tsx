@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-export const TableForm = ({ pagesRecord, OnPageEdit, onPageRecordDelete }: any): JSX.Element => {
+export const TableForm = ({ pagesRecord, OnPageEdit, onPageRecordDelete, OnPageView, t }: any): JSX.Element => {
     return (
         <div className='box'>
             <div className='table-responsive'>
@@ -10,12 +10,12 @@ export const TableForm = ({ pagesRecord, OnPageEdit, onPageRecordDelete }: any):
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Url</th>
-                            <th>Snapshot</th>
-                            <th>Text Resources count</th>
-                            <th>Action</th>
+                            <th>{t('NAME')}</th>
+                            <th>{t('DESCRIPTION')}</th>
+                            <th>{t('URL')}</th>
+                            <th>{t('SNAPSHOT')}</th>
+                            <th>{t('TEXT_RESOURCE_COUNT')}</th>
+                            <th>{t('ACTION')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@ export const TableForm = ({ pagesRecord, OnPageEdit, onPageRecordDelete }: any):
                                         <th>
                                             <div className='d-flex justify-content-around'>
                                                 <span className='cursor-pointer'>
-                                                    <FontAwesomeIcon icon={faEye} />
+                                                    <FontAwesomeIcon icon={faEye} onClick={() => OnPageView(item._id)} />
                                                 </span>
                                                 <span className='cursor-pointer' onClick={() => OnPageEdit(item._id)}>
                                                     <FontAwesomeIcon icon={faPencilAlt} />
