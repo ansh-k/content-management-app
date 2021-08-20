@@ -1,18 +1,25 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import { REQUIRED_VALIDATION_MESSAGE } from './../util';
 
-const pagesSchema = new Schema(
+export interface IPage extends Document {
+  name: string;
+  url: string;
+  description: string;
+  image: string;
+}
+
+const pagesSchema: Schema = new Schema(
   {
     name: {
       type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     url: {
-      type: Schema.Types.Number,
+      type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     description: {
-      type: Schema.Types.Number,
+      type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     image: {
@@ -25,4 +32,6 @@ const pagesSchema = new Schema(
   }
 );
 
-export const Pages = model('Page', pagesSchema);
+const Pages: Model<IPage> = model<IPage>('Page', pagesSchema);
+
+export { Pages };

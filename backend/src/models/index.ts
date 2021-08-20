@@ -1,2 +1,4 @@
-export * as PageModel from './Pages';
-export * as TextResourcesModel from './TextResources';
+import { Pages as PageModel } from './Pages';
+import { TextResources as TextResourcesModel } from './TextResources';
+
+export { PageModel, TextResourcesModel };

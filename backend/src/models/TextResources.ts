@@ -1,6 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Model } from 'mongoose';
 import { REQUIRED_VALIDATION_MESSAGE } from './../util';
 
+export interface ITxtRes extends Document {
+  pageID: string;
+  name: string;
+  value: string;
+  maxLength: string;
+  lineType: string;
+}
 const txtResSchema = new Schema(
   {
     pageID: {
@@ -12,11 +19,11 @@ const txtResSchema = new Schema(
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     value: {
-      type: Schema.Types.Number,
+      type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     maxLength: {
-      type: Schema.Types.Number,
+      type: Schema.Types.String,
       required: REQUIRED_VALIDATION_MESSAGE,
     },
     lineType: {
@@ -34,4 +41,9 @@ const txtResSchema = new Schema(
   }
 );
 
-export const TextResources = model('TextResources', txtResSchema);
+const TextResources: Model<ITxtRes> = model<ITxtRes>(
+  'TextResources',
+  txtResSchema
+);
+
+export { TextResources };
