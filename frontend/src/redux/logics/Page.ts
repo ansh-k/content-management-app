@@ -44,8 +44,11 @@ const pagesList = createLogic({
   async process(data: any, dispatch, done) {
     const { action } = data;
     const { payload } = action;
+    const { search, page, _limit } = payload;
     await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}page/`, payload)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}page/?search=${search}&page=${page}&_limit=${_limit}`
+      )
       .then((response) => {
         const { data, success } = response.data;
         if (success) {

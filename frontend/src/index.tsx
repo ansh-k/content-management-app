@@ -1,13 +1,11 @@
 import React, { StrictMode, Suspense, } from 'react';
-import "./common/i18next";
-
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
+import "./common/i18next";
 import configureStore from './redux/store';
 
 import './styles/index.css'

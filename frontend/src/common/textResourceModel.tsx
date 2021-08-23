@@ -11,7 +11,6 @@ const TextResourceModal = ({
   t, onAddNewTextResourceModalToggle, onTextResourceSubmit, id
 }: any) => {
   const { name, value, type, maxLength, lineType, _id = '' } = textResourceInputs;
-  console.log('textResourceInputs', textResourceInputs)
   return (
     <MDBModal isOpen={textResourceToggle} centered>
       <MDBModalHeader toggle={onAddNewTextResourceModalToggle}>

@@ -27,3 +27,11 @@ code {
   display: flex !important;
   margin-top: 10px !important;
 }
+
+li.page-item.active {
+  background-color: #4285f4;
+}
+
+.desc-width {
+  max-width: 150px;
+}

@@ -48,11 +48,11 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     const pagesResult: any = useSelector<any>((state) => state.pageReducer);
     const { isPageAdded, pageData } = pagesResult;
     useEffect(() => {
-        if (isPageAdded) history.push('/');
+        if (isPageAdded) history.push('/');// eslint-disable-next-line
     }, [isPageAdded]);
 
     useEffect(() => {
-        if (id) dispatch(requestPageById(id));
+        if (id) dispatch(requestPageById(id));// eslint-disable-next-line
     }, []);
 
     useEffect(() => {
@@ -165,7 +165,7 @@ const AddEditPage: FC<IListProps> = (props: any) => {
     const onTextResourceSubmit = (event: SyntheticEvent) => {
         event.preventDefault();
         if (textResourceInputs._id && id) {
-            var foundIndex = inputs.textResources.findIndex((x: any) => x._id == textResourceInputs._id);
+            var foundIndex = inputs.textResources.findIndex((x: any) => x._id === textResourceInputs._id);
             inputs.textResources[foundIndex] = textResourceInputs;
         } else {
             inputs.textResources.push(textResourceInputs);

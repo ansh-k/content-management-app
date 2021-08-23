@@ -1,3 +1,7 @@
+import React, { ChangeEvent, SyntheticEvent } from 'react';
+
 export interface ISearchFormProps {
-  search: string;
+  searchValue: string;
+  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (event: SyntheticEvent) => void;
 }

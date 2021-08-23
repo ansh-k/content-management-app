@@ -1,5 +1,6 @@
 import { connect } from 'mongoose';
 import dotenv from 'dotenv';
+import { addPages } from '../seeder';
 dotenv.config();
 /*
 ----------------
@@ -19,6 +20,7 @@ export const db = connect(process.env.DB_URL, {
 })
   .then(() => {
     console.log('Database connected successfully!!!');
+    addPages(); // seed pages
   })
   .catch((error: any) => {
     console.log('Error in database connection', error.message);

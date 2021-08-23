@@ -34,11 +34,23 @@ const pageCreate = async (req: Request, res: Response, next: NextFunction) => {
 --------------------------
 */
 const pagesList = async (req: Request, res: Response, next: NextFunction) => {
-  // const { body } = req;
-  // const { name, url, description, image } = body;
+  const { query } = req;
+  const { search = '', page = 1, _limit } = query || {};
+  const _page: any = page || 1;
+  const limit: any = _limit || 10;
 
+  const skipValue = (parseInt(_page) - 1) * parseInt(limit);
   try {
-    const page = await PageModel.aggregate([
+    let condition: any = {};
+    if (search) {
+      condition = {
+        name: new RegExp('^' + search + '$', 'i'),
+      };
+    }
+    const data = await PageModel.aggregate([
+      {
+        $match: condition,
+      },
       {
         $lookup: {
           from: 'textresources', // collection name in db
@@ -50,9 +62,15 @@ const pagesList = async (req: Request, res: Response, next: NextFunction) => {
       {
         $sort: { createdAt: -1 },
       },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skipValue }, { $limit: parseInt(limit) }], // add projection here wish you re-shape the docs
+        },
+      },
     ]);
 
-    res.send({ data: page, success: true });
+    res.send({ data: data[0], success: true });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ response: err });

@@ -18,10 +18,10 @@ const ViewPage: FC<any> = (props: any) => {
 
     // selectors
     const pagesResult: any = useSelector<any>((state) => state.pageReducer);
-    const { pageData } = pagesResult;
+    const { pageData, isLoading } = pagesResult;
 
     useEffect(() => {
-        if (id) dispatch(requestPageById(id));
+        if (id) dispatch(requestPageById(id));// eslint-disable-next-line
     }, []);
 
     return (
@@ -30,6 +30,7 @@ const ViewPage: FC<any> = (props: any) => {
             < ViewForm
                 pageData={pageData}
                 t={t}
+                isLoading={isLoading}
             />
         </div>
     );
