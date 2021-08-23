@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import Input from '../../common/Input';
+import { IAddEditFormProps } from '../../interfaces';
 
 export const AddEditPageForm = ({
 	onSubmit,
@@ -14,7 +15,8 @@ export const AddEditPageForm = ({
 	id,
 	OnTextResourceEdit,
 	onTextResourceDelete,
-}: any): JSX.Element => {
+	validObj,
+}: IAddEditFormProps): JSX.Element => {
 	const { name, url, description, image, textResources } = inputs || {};
 
 	return (
@@ -28,6 +30,7 @@ export const AddEditPageForm = ({
 						placeholder='Enter name'
 						value={name}
 						onChange={onInputChange}
+						valid={validObj.validName}
 					/>
 				</div>
 				<div className='col-md-6'>
@@ -38,6 +41,7 @@ export const AddEditPageForm = ({
 						placeholder='Enter url'
 						value={url}
 						onChange={onInputChange}
+						valid={validObj.validURL}
 					/>
 				</div>
 				<div className='col-md-12'>
@@ -49,6 +53,7 @@ export const AddEditPageForm = ({
 						placeholder='Enter description'
 						value={description}
 						onChange={onInputChange}
+						valid={validObj.validDesc}
 					/>
 				</div>
 				<div className='col-md-6'>
@@ -59,6 +64,7 @@ export const AddEditPageForm = ({
 						placeholder='Upload image'
 						accept='image/*'
 						onChange={onHandleFileUpload}
+						valid={validObj.validImage}
 					/>
 				</div>
 				{image ? (

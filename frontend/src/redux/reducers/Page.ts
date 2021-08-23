@@ -10,7 +10,7 @@ export const PageReducer = handleActions(
       action: any
     ) => ({
       ...state,
-      isLoading: false,
+      isLoading: true,
       totalRecords: 0,
       isPageAdded: false,
       pageData: {},

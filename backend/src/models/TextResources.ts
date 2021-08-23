@@ -1,7 +1,7 @@
 import { Schema, model, Model } from 'mongoose';
 import { REQUIRED_VALIDATION_MESSAGE } from './../util';
 
-export interface ITxtRes extends Document {
+interface ITxtRes extends Document {
   pageID: string;
   name: string;
   value: string;
@@ -51,4 +51,4 @@ const TextResources: Model<ITxtRes> = model<ITxtRes>(
   txtResSchema
 );
 
-export { TextResources };
+export { TextResources, ITxtRes };

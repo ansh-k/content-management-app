@@ -1,23 +1,21 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { PageModel, TextResourcesModel } from '../models';
+import { ITxtRes, PageModel, TextResourcesModel } from '../models';
 
 /*
 ------------------------
     API to create pages
 -----------------------
 */
-
-const pageCreate = async (req: Request, res: Response, next: NextFunction) => {
+const pageCreate = async (req: Request, res: Response) => {
   const { body } = req;
   const { textResources } = body;
-
   try {
     const page = await PageModel.create(body);
     if (page && page._id) {
       var data = JSON.parse(textResources);
       if (data && data.length > 0) {
-        data = data.map((item: any) => ({ ...item, pageID: page._id }));
+        data = data.map((item: ITxtRes) => ({ ...item, pageID: page._id }));
         await TextResourcesModel.insertMany(data);
       }
       res.send({ page: page, success: true });
@@ -33,15 +31,16 @@ const pageCreate = async (req: Request, res: Response, next: NextFunction) => {
     API to get pages list
 --------------------------
 */
-const pagesList = async (req: Request, res: Response, next: NextFunction) => {
-  const { query } = req;
-  const { search = '', page = 1, _limit } = query || {};
-  const _page: any = page || 1;
-  const limit: any = _limit || 10;
+const pagesList = async (req: Request, res: Response) => {
+  const {
+    query: { search = '', page = 1, _limit },
+  } = req;
+  const _page: number | any = page || 1;
+  const limit: number | any = _limit || 10;
 
   const skipValue = (parseInt(_page) - 1) * parseInt(limit);
   try {
-    let condition: any = {};
+    let condition: object = {};
     if (search) {
       condition = {
         name: new RegExp('^' + search + '$', 'i'),
@@ -82,10 +81,10 @@ const pagesList = async (req: Request, res: Response, next: NextFunction) => {
     API to get page data by id
 -------------------------------
 */
-const pageView = async (req: Request, res: Response, next: NextFunction) => {
-  const { params } = req;
-  const { id } = params;
-
+const pageView = async (req: Request, res: Response) => {
+  const {
+    params: { id },
+  } = req;
   try {
     const page = await PageModel.aggregate([
       {
@@ -114,12 +113,11 @@ const pageView = async (req: Request, res: Response, next: NextFunction) => {
     API to edit pages
 -----------------------
 */
-
-const editPage = async (req: Request, res: Response, next: NextFunction) => {
-  const { body, params } = req;
-  const { textResources, name, url, description, image } = body;
-  const { id } = params;
-
+const editPage = async (req: Request, res: Response) => {
+  const {
+    body: { textResources, name, url, description, image },
+    params: { id },
+  } = req;
   try {
     const page = await PageModel.updateOne(
       {
@@ -136,7 +134,7 @@ const editPage = async (req: Request, res: Response, next: NextFunction) => {
     if (page && id) {
       var data = JSON.parse(textResources);
       if (data && data.length > 0) {
-        var updates = data.map(async (item: any) => {
+        var updates = data.map(async (item: ITxtRes | any) => {
           if (item._id) {
             return await TextResourcesModel.updateOne(
               { _id: item._id },
@@ -161,15 +159,10 @@ const editPage = async (req: Request, res: Response, next: NextFunction) => {
     API to delete page record
 ------------------------------
 */
-
-const deletePageRecord = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { params } = req;
-  const { id } = params;
-
+const deletePageRecord = async (req: Request, res: Response) => {
+  const {
+    params: { id },
+  } = req;
   try {
     await PageModel.findByIdAndRemove(id);
     await TextResourcesModel.remove({ pageID: Types.ObjectId(id) });
@@ -185,15 +178,10 @@ const deletePageRecord = async (
     API to delete text resource
 --------------------------------
 */
-
-const deleteTextResource = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { params } = req;
-  const { id } = params;
-
+const deleteTextResource = async (req: Request, res: Response) => {
+  const {
+    params: { id },
+  } = req;
   try {
     await TextResourcesModel.findByIdAndRemove(id);
     res.send({ success: true });

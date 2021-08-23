@@ -21,6 +21,9 @@
   "TYPE": "Type",
   "MAX_LENGTH": "Max Length",
   "CREATED_DATE": "Created Date",
-  "UPDATED_DATE": "Last Updated Date",
-  "NOT_ADDED": "Not Added"
+  "NOT_ADDED": "Not Added",
+  "PAGE_EDIT_SUCCESS": "Page edited successfully",
+  "RECORD_DELETE_SUCCESS": "Record deleted successfully",
+  "PAGE_CREATE_SUCCESS": "Page created successfully",
+  "FORM_ERROR_MESSAGE": "Please provide valid input to all input fields"
 }

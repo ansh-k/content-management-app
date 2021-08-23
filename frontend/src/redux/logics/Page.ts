@@ -10,6 +10,7 @@ import {
 } from '../actions';
 import axios from 'axios';
 import toastr from 'toastr';
+import i18next from 'i18next';
 
 /*
 -----------------
@@ -24,7 +25,7 @@ const addNewPage = createLogic({
     await axios
       .post(`${process.env.REACT_APP_SERVER_URL}page/`, payload)
       .then(() => {
-        toastr.success('Page created successfully');
+        toastr.success(i18next.t('PAGE_CREATE_SUCCESS', { lng: 'en' }));
         dispatch(addNewPageSuccess());
         done();
       })
@@ -101,7 +102,7 @@ const editPage = createLogic({
     await axios
       .put(`${process.env.REACT_APP_SERVER_URL}page/${id}`, payload)
       .then(() => {
-        toastr.success('Page edited successfully');
+        toastr.success(i18next.t('PAGE_EDIT_SUCCESS', { lng: 'en' }));
         dispatch(editPageSuccess());
         done();
       })
@@ -129,7 +130,7 @@ const deleteRecord = createLogic({
         }`
       )
       .then(() => {
-        toastr.success('Record deleted successfully');
+        toastr.success(i18next.t('RECORD_DELETE_SUCCESS', { lng: 'en' }));
         if (textResourceID) {
           dispatch(requestPageById(pageID));
         } else {

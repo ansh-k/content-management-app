@@ -1,19 +1,15 @@
 import { createAction } from 'redux-actions';
 
 export const PageActions = {
-  ADD_PAGE_REQUEST: 'Request add page!',
+  ADD_PAGE_REQUEST: 'Request add page!', // add actions
   ADD_PAGE_SUCCESS: 'Add page success',
-
-  REQUEST_PAGES_LIST: 'Request pages list',
+  REQUEST_PAGES_LIST: 'Request pages list', // page list actions
   PAGES_LIST_SUCCESS: 'Pages list success',
-
-  REQUEST_PAGE_BY_ID: 'request page by id',
+  REQUEST_PAGE_BY_ID: 'request page by id', // page data by id actions
   PAGE_BY_ID_SUCCESS: 'Page by id success',
-
-  EDIT_PAGE_REQUEST: 'Request edit page!',
+  EDIT_PAGE_REQUEST: 'Request edit page!', // edit page actions
   EDIT_PAGE_SUCCESS: 'Edit page success',
-
-  DELETE_RECORD_REQUEST: 'Request to delete record',
+  DELETE_RECORD_REQUEST: 'Request to delete record', // delete record actions
 };
 
 /*

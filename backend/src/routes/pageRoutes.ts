@@ -15,7 +15,6 @@ router.post('/', pageCreate);
 router.get('/', pagesList);
 router.get('/:id', pageView);
 router.put('/:id', editPage);
-
 router.delete('/textResource/:id', deleteTextResource);
 router.delete('/:id', deletePageRecord);
 
